@@ -304,6 +304,42 @@ mySingle1.getRandom() === mySingle2.getRandom();   // true
 * 发布者不能确定订阅者是否正常进行
 * 订阅者之间没有感知
 
+``` javascript
+
+var broadMsg = (function() {
+  let chanelList = []
+  return {
+    pub: function(chanel, data) {
+      
+      let _chanel = chanelList[chanel] || [];
+
+      //chanel[i]是一个回调函数
+      for(let i = 0, l = _chanel.length; i < l; i++) {
+        // 执行函数
+        _chanel[i](chanel, data)
+      }
+    },
+
+
+    // 给频道添加函数
+    sub: function(chanel, cb) {
+      chanelList[chanel] = chanelList[chanel] || []
+      for(let i = 0, l = chanelList.length; i < l; i++) {
+        //
+      }
+      chanelList[chanel].push(cb)
+    }
+  }
+})()
+
+
+broadMsg.sub("CHANEL1", function(chanel, data) {
+  console.log(data)
+})
+
+broadMsg.pub("CHANEL1", 123)
+```
+
 ##### 例子：解耦搜索内容 ——Ajax
 
 ``` 
